@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Trending News Horizontal Scroll -->
+<section class="trending-section" id="trending">
+    <h3>Trending Now</h3>
+    <div class="scroll-container">
+        <div class="news-cards">
+            {% include 'blog/list.html' %}
+        </div>
+        <button class="scroll-button left" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="scroll-button right" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+    </div>
+</section>
+{% endblock %}

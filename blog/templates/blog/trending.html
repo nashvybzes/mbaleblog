@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/trending.css' %}">
+{% endblock %}
+{% block content %}
+<main class="trending-page">
+    <section class="trending-header">
+        <h2>Trending Stories</h2>
+        <p>Discover the most popular news stories from around the world</p>
+    </section>
+
+    <section class="trending-grid">
+        {% for post in blog_posts %}
+        <article class="trending-article">
+            {% if post.cover_image %}
+            <a href="{% url 'blog:detail' post.slug %}">
+            <div class="article-image" style="background-image: url('{{ post.cover_image.url }}');">
+                <span class="tag">{{ post.category.category }}</span>
+            </div>
+            {% endif %}
+            <div class="article-content">
+                <h3><a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a></h3>
+                <p>{{ post.headline }}</p>
+                </a>
+                <div class="article-meta">
+                    <span class="date">{{ post.published_at|date:"F j, Y" }}</span>
+                    <span class="author">By {{ post.author.username }}</span>
+                    <span class="comments"><i class="fas fa-comment"></i> {{ post.comments.count }}</span>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </section>
+
+    <div class="load-more">
+        {% if blog_posts.has_next %}
+        <a href="?page={{ blog_posts.next_page_number }}" class="cta-button">Load More Stories</a>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

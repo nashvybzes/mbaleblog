@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="contact-page">
+    <section class="contact-hero">
+        <h2>Get In Touch</h2>
+        <p>We'd love to hear from you! Reach out with questions, feedback, or story tips.</p>
+    </section>
+
+    <section class="contact-content">
+        <div class="contact-form-container">
+            <h3>Send Us a Message</h3>
+            <form class="contact-form" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <div class="error">{{ form.name.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="error">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.subject.label_tag }}
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <div class="error">{{ form.subject.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.message.label_tag }}
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                        <div class="error">{{ form.message.errors }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+            
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <h4>Address</h4>
+                    <p>123 News Street, Media District<br>Nairobi, NY 10001, Kenya</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <h4>Phone</h4>
+                    <p>+254 793402753</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <h4>Email</h4>
+                    <p>info@newswave.com</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-clock"></i>
+                <div>
+                    <h4>Office Hours</h4>
+                    <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM</p>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-departments">
+        <h3>Contact Specific Departments</h3>
+        <div class="departments-grid">
+            <div class="department-card">
+                <i class="fas fa-newspaper"></i>
+                <h4>Editorial</h4>
+                <p>For story submissions, corrections, or editorial inquiries</p>
+                <a href="mailto:editorial@newswave.com">editorial@newswave.com</a>
+            </div>
+            <div class="department-card">
+                <i class="fas fa-ad"></i>
+                <h4>Advertising</h4>
+                <p>For advertising opportunities and partnership inquiries</p>
+                <a href="mailto:ads@newswave.com">ads@newswave.com</a>
+            </div>
+            <div class="department-card">
+                <i class="fas fa-users"></i>
+                <h4>Careers</h4>
+                <p>For job opportunities and internship inquiries</p>
+                <a href="mailto:careers@newswave.com">careers@newswave.com</a>
+            </div>
+            <div class="department-card">
+                <i class="fas fa-headset"></i>
+                <h4>Support</h4>
+                <p>For technical support and account assistance</p>
+                <a href="mailto:support@newswave.com">support@newswave.com</a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

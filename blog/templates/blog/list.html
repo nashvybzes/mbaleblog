@@ -1,0 +1,116 @@
+{% load static %}
+
+{% block content %}
+    <!-- Trending News Horizontal Scroll -->
+    <section class="trending-section">
+        <h3>Trending Now</h3>
+        <div class="scroll-container">
+            <div class="news-cards">
+                {% for post in trending_posts %}
+                <div class="news-card">
+                    {% if post.cover_image %}
+                    <a href="{% url 'blog:detail' post.slug %}">
+                    <div class="news-image" style="background-image: url('{{ post.cover_image.url }}');">
+                        <span class="tag">{{ post.category }}</span>
+                    </div>
+                    {% endif %}</a>
+                    <div class="news-content">
+                        <h4><a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a></h4>
+                        <p>{{ post.headline }}</p>
+                        <div class="news-meta">
+                            <span class="date">{{ post.published_at|date:"F j, Y" }}</span>
+                            <span class="author">By {{ post.author.username }} {{ post.views }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="scroll-button left" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+            <button class="scroll-button right" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Blog Posts List -->
+    <section class="blog-list">
+        <div class="container">
+            <div class="main-content">
+                {% for post in blog_posts %}
+                <article class="blog-post">
+                  <a href="{% url 'blog:detail' post.slug %}">
+                    {% if post.cover_image %}
+                    <div class="post-image">
+                        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="category">{{ post.category.category }}</span>
+                            <span class="date">{{ post.published_at|date:"F j, Y" }}</span>
+                        </div>
+                        <h2><a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a></h2>
+                        <p>{{ post.headline }}</p>
+                        <div class="post-footer">
+                            <span class="author">By {{ post.author.username }}</span>
+                        </div>
+                    </div>
+                    </a>
+                </article>
+                {% endfor %}
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    {% if blog_posts.has_previous %}
+                        <a href="?page={{ blog_posts.previous_page_number }}" class="page-link">Previous</a>
+                    {% endif %}
+                    
+                    {% for num in blog_posts.paginator.page_range %}
+                        {% if blog_posts.number == num %}
+                            <span class="current-page">{{ num }}</span>
+                        {% else %}
+                            <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if blog_posts.has_next %}
+                        <a href="?page={{ blog_posts.next_page_number }}" class="page-link">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sideba">
+                <div class="sideba-widget">
+                    <h4>Categories</h4>
+                    <ul class="category-list">
+                        {% for category in categories %}
+                        <li><a href="?category={{ category.slug }}">{{ category.category }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="sideba-widget">
+                    <h4>Recent Posts</h4>
+                    <ul class="recent-posts">
+                        {% for post in recent_posts %}
+                        <li>
+                            <a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a>
+                            <span class="post-date">{{ post.published_at|date:"M j, Y" }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="sideba-widget">
+                    <h4>Most Viewed</h4>
+                    <ul class="most-viewed">
+                        {% for post in most_viewed %}
+                        <li>
+                            <a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </section>
+{% endblock %}

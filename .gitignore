@@ -1,0 +1,47 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+.env.*
+
+# Django static & media (if generated)
+staticfiles/
+media/
+
+# Logs
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# VSCode / IDE settings
+.vscode/
+.idea/
+
+# Nginx/SSL
+*.pem
+*.crt
+*.key
+
+# Gunicorn socket file (if inside project dir)
+*.sock
+
+# Test/coverage tools
+htmlcov/
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+
+# Migrations (optional, if you prefer generating them manually)
+**/migrations/*.pyc
+**/migrations/__pycache__/

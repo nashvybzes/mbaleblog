@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Us{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% load static %}
+{% block content %}
+<section class="about-hero">
+            <h2>About NewsWave</h2>
+            <p>Delivering accurate, timely, and impactful news to our global audience</p>
+        </section>
+
+        <section class="about-content">
+            <div class="about-image">
+                <img src="mg/clgqeb0ws002cjl08jqflr33b_1.jpg" alt="NewsWave Team">
+            </div>
+            <div class="about-text">
+                <h3>Our Story</h3>
+                <p>Founded in 2015, NewsWave began as a small team of passionate journalists dedicated to bringing unbiased, factual reporting to an increasingly complex media landscape. What started as a local news blog has grown into an internationally recognized news platform with millions of monthly readers.</p>
+                
+                <h3>Our Mission</h3>
+                <p>At NewsWave, we believe in the power of information to educate, inspire, and create positive change. Our mission is to deliver news that matters with integrity, depth, and clarity. We're committed to journalistic excellence, holding power to account, and telling stories that might otherwise go unheard.</p>
+                
+                <h3>Our Values</h3>
+                <ul class="values-list">
+                    <li><i class="fas fa-check-circle"></i> <strong>Accuracy:</strong> Fact-checked, verified reporting</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Integrity:</strong> Ethical journalism without hidden agendas</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Diversity:</strong> Inclusive coverage representing all voices</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Innovation:</strong> Leveraging technology to enhance storytelling</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Community:</strong> Engaging with our readers as partners</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <h3>Meet Our Team</h3>
+            <div class="team-grid">
+                <!-- Team Member 1 -->
+                <div class="team-member">
+                    <div class="member-image" style="background-image: url('mg/s\ \(5\).jpg');"></div>
+                    <h4>By Bin Salomon</h4>
+                    <p class="position">Editor-in-Chief</p>
+                    <p class="bio">With 15 years of journalism experience, Salomon leads our editorial team with vision and dedication.</p>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="team-member">
+                    <div class="member-image" style="background-image: url('mg/s\ \(3\).jpg');"></div>
+                    <h4>By Bin Salomon</h4>
+                    <p class="position">Senior Reporter</p>
+                    <p class="bio">Salomon specializes in politics and international affairs, bringing depth to complex stories.</p>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="team-member">
+                    <div class="member-image" style="background-image: url('mg/s\ \(2\).jpg');"></div>
+                    <h4>By Bin Salomon</h4>
+                    <p class="position">Business Editor</p>
+                    <p class="bio">salomon's financial expertise helps readers navigate the world of business and economics.</p>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div class="team-member">
+                    <div class="member-image" style="background-image: url('mg/s\ \(1\).jpg');"></div>
+                    <h4>By Bin Salomon</h4>
+                    <p class="position">Technology Correspondent</p>
+                    <p class="bio">Salomon breaks down complex tech developments into accessible, engaging stories.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="achievements">
+            <h3>Our Achievements</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">10M+</div>
+                    <div class="stat-label">Monthly Readers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Countries Reached</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">25</div>
+                    <div class="stat-label">Journalism Awards</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Dedicated Team Members</div>
+                </div>
+            </div>
+        </section>
+    {% endblock %}

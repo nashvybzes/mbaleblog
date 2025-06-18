@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsWave - Stay Updated</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block css %} {% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Logo and Navigation -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-circle">
+                <span class="logo-text">NV</span>
+            </div>
+            <h1 class="site-title">NV | Gishu Live | East Vibes</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'blog:home' %}" class="{% if request.resolver_match.url_name == 'blog:home' %}active{% endif %}">Home</a></li>
+                <li><a href="{% url 'blog:trending' %}">Trending</a></li>
+                <li><a href="{% url 'playlist_detail' %}">Playlist</a></li>
+                <li><a href="{% url 'blog:about' %}">About</a></li>
+                <li><a href="{% url 'blog:contact' %}">Contact Us</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+     <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Stay Updated With The Latest News</h2>
+            <p>Discover trending stories from around the world</p>
+            <button class="cta-button">Explore More</button>
+        </div>
+    </section>
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-circle">
+                    <span class="logo-text">NW</span>
+                </div>
+                <h3>NewsWave</h3>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="{% url 'blog:home' %}">Home</a></li>
+                    <li><a href="{% url 'blog:trending' %}">Trending</a></li>
+                    <li><a href="{% url 'playlist_detail' %}">Playlist</a></li>
+                    <li><a href="{% url 'blog:about' %}">About</a></li>
+                    <li><a href="{% url 'blog:contact' %}">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-subscribe">
+                <h4>Subscribe for More News</h4>
+                <form class="subscribe-form" action="{% url 'blog:newsletter_signup' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {% now "Y" %} Nash Vybzes &trade; | Gishu Live Tv | East Vibes.Bizz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

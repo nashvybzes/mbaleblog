@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="news-detail-container">
+    <div class="news-detail-grid">
+        <div class="main-news-content">
+            <div class="news-profile">
+                {% if post.cover_image %}
+                <div class="news-profile-image" style="background-image: url('{{ post.cover_image.url }}');"></div>
+                {% endif %}
+                <h2>{{ post.title }}</h2>
+                <div class="author-info">
+                    {% if post.author.profile.image %}
+                    <img src="{{ post.author.profile.image.url }}" alt="{{ post.author.username }}" class="author-avatar">
+                    {% else %}
+                    <img src="{% static 'img/default-avatar.jpg' %}" alt="{{ post.author.username }}" class="author-avatar">
+                    {% endif %}
+                    <div>
+                        <p class="author-name">{{ post.author.username }}</p>
+                        <p class="publish-date">{{ post.published_at|date:"F j, Y" }} · {{ post.content|wordcount|divide:200 }} min read</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Details -->
+            <div class="news-details">
+                {{ post.content|linebreaks }}
+            </div>
+
+            <!-- News Meta -->
+            <div class="news-meta">
+                <div class="author-meta">
+                    {% if post.author.profile.image %}
+                    <img src="{{ post.author.profile.image.url }}" alt="{{ post.author.username }}" class="author-avatar-small">
+                    {% else %}
+                    <img src="{% static 'img/default-avatar.jpg' %}" alt="{{ post.author.username }}" class="author-avatar-small">
+                    {% endif %}
+                    <div>
+                        <p class="author-name">{{ post.author.username }}</p>
+                        <p class="publish-date">Published on {{ post.published_at|date:"F j, Y" }}</p>
+                    </div>
+                </div>
+                <div class="news-actions">
+                    <button class="like-button" id="likeButton">
+                        <i class="far fa-heart"></i> <span id="likeCount">{{ post.likes.count }}</span> Likes
+                    </button>
+                    <div class="share-dropdown">
+                        <button class="share-button">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                        <div class="share-dropdown-content">
+                            <a href="#" class="share-option facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            <a href="#" class="share-option twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                            <a href="#" class="share-option instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                            <a href="#" class="share-option tiktok"><i class="fab fa-tiktok"></i> TikTok</a>
+                            <a href="#" class="share-option whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h3>Comments ({{ comments.count }})</h3>
+                <form class="comment-form" id="commentForm" method="POST" action="{% url 'blog:ajax_comment' post.slug %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ comment_form.username.label_tag }}
+                        {{ comment_form.username }}
+                        {% if comment_form.username.errors %}
+                            <div class="error">{{ comment_form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ comment_form.text.label_tag }}
+                        {{ comment_form.text }}
+                        {% if comment_form.text.errors %}
+                            <div class="error">{{ comment_form.text.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <!-- Honeypot field -->
+                    {{ comment_form.honeypot }}
+                    <!-- Parent comment ID for replies -->
+                    <input type="hidden" name="parent_id" id="parent_id" value="">
+                    <button type="submit" class="submit-comment">Post Comment</button>
+                </form>
+
+                <div class="comments-list" id="commentsList">
+                    {% for comment in comments %}
+                    <div class="comment" id="comment-{{ comment.id }}">
+                        <div class="comment-author">
+                            <span class="comment-username">{{ comment.username }}</span>
+                            <span class="comment-date">{{ comment.created_at|date:"F j, Y" }}</span>
+                        </div>
+                        <div class="comment-text">{{ comment.text }}</div>
+                        <button class="reply-button" data-comment-id="{{ comment.id }}">Reply</button>
+                        
+                        <!-- Replies -->
+                        {% for reply in comment.replies.all %}
+                        <div class="comment-reply" id="comment-{{ reply.id }}">
+                            <div class="comment-author">
+                                <span class="comment-username">{{ reply.username }}</span>
+                                <span class="comment-date">{{ reply.created_at|date:"F j, Y" }}</span>
+                            </div>
+                            <div class="comment-text">{{ reply.text }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section - Related News -->
+        <div class="related-news">
+            <h3>Related News</h3>
+            {% for related_post in related_posts %}
+            <div class="related-news-item">
+                {% if related_post.cover_image %}
+                <div class="related-news-image" style="background-image: url('{{ related_post.cover_image.url }}');"></div>
+                {% endif %}
+                <div class="related-news-content">
+                    <h4><a href="{% url 'blog:detail' related_post.slug %}">{{ related_post.title }}</a></h4>
+                    <a href="{% url 'blog:detail' related_post.slug %}">
+                    <p>{{ related_post.headline }}</p>
+                    </a>
+                    <div class="related-news-meta">
+                        <span class="date">{{ related_post.published_at|date:"F j, Y" }}</span>
+                        <span class="author">By {{ related_post.author.username }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Trending News Horizontal Scroll -->
+    <section class="trending-section">
+        <h3>Trending Now</h3>
+        <div class="scroll-container">
+            <div class="news-cards">
+                {% for trending_post in trending_posts %}
+                <div class="news-card">
+                    {% if trending_post.cover_image %}
+                    <div class="news-image" style="background-image: url('{{ trending_post.cover_image.url }}');">
+                        <span class="tag">Trending</span>
+                    </div>
+                    {% endif %}
+                    <div class="news-content">
+                        <h4><a href="{% url 'blog:detail' trending_post.slug %}">{{ trending_post.title }}</a></h4>
+                        <p>{{ trending_post.headline }}</p>
+                        <div class="news-meta">
+                            <span class="date">{{ trending_post.published_at|date:"F j, Y" }}</span>
+                            <span class="author">By {{ trending_post.author.username }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="scroll-button left" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+            <button class="scroll-button right" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+</main>
+
+<script>
+// JavaScript for handling comment replies
+document.addEventListener('DOMContentLoaded', function() {
+    const replyButtons = document.querySelectorAll('.reply-button');
+    
+    replyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const commentId = this.getAttribute('data-comment-id');
+            document.getElementById('parent_id').value = commentId;
+            
+            // Scroll to comment form
+            document.getElementById('commentForm').scrollIntoView({ behavior: 'smooth' });
+            
+            // Focus on textarea
+            document.getElementById('id_text').focus();
+        });
+    });
+    
+    // AJAX form submission
+    const commentForm = document.getElementById('commentForm');
+    if (commentForm) {
+        commentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear form
+                    commentForm.reset();
+                    
+                    // Create new comment element
+                    const commentsList = document.getElementById('commentsList');
+                    const newComment = document.createElement('div');
+                    newComment.className = data.parent_id ? 'comment-reply' : 'comment';
+                    newComment.id = `comment-${data.comment_id}`;
+                    
+                    newComment.innerHTML = `
+                        <div class="comment-author">
+                            <span class="comment-username">${data.username}</span>
+                            <span class="comment-date">${data.created_at}</span>
+                        </div>
+                        <div class="comment-text">${data.text}</div>
+                        ${!data.parent_id ? '<button class="reply-button" data-comment-id="' + data.comment_id + '">Reply</button>' : ''}
+                    `;
+                    
+                    if (data.parent_id) {
+                        document.getElementById(`comment-${data.parent_id}`).appendChild(newComment);
+                    } else {
+                        commentsList.prepend(newComment);
+                    }
+                    
+                    // Add event listener to new reply button
+                    if (!data.parent_id) {
+                        newComment.querySelector('.reply-button').addEventListener('click', function() {
+                            document.getElementById('parent_id').value = this.getAttribute('data-comment-id');
+                            document.getElementById('commentForm').scrollIntoView({ behavior: 'smooth' });
+                            document.getElementById('id_text').focus();
+                        });
+                    }
+                    
+                    // Show success message
+                    alert('Comment posted successfully!');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the comment.');
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
