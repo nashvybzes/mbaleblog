@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bad Request</title>
+    <style>
+        body {
+            background-color: #fff5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #721c24;
+            text-align: center;
+            padding: 100px;
+        }
+        .error-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            font-size: 72px;
+            margin-bottom: 0;
+            color: #f44336;
+        }
+        h2 {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background: #f44336;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+        }
+        a:hover {
+            background: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>400</h1>
+        <h2>Bad Request</h2>
+        <p>The server could not understand your request.<br>Please check the URL or input data and try again.</p>
+        <a href="{% url 'blog:home' %}">Return to Homepage</a>
+    </div>
+</body>
+</html>

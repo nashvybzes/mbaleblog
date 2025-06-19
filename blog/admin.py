@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.core.mail import send_mass_mail
 from django.contrib import messages
-from .models import BlogPost, Category, Subscriber, Comment
+from .models import BlogPost, Category, Subscriber, Comment, Contact
+
+admin.site.register(Contact)
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
