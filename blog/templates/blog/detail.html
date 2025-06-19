@@ -19,7 +19,7 @@
                     {% if post.author.profile.image %}
                     <img src="{{ post.author.profile.image.url }}" alt="{{ post.author.username }}" class="author-avatar">
                     {% else %}
-                    <img src="{% static 'img/default-avatar.jpg' %}" alt="{{ post.author.username }}" class="author-avatar">
+                    <img src="{% static 'images/logo.png' %}" alt="{{ post.author.username }}" class="author-avatar">
                     {% endif %}
                     <div>
                         <p class="author-name">{{ post.author.username }}</p>
@@ -39,7 +39,7 @@
                     {% if post.author.profile.image %}
                     <img src="{{ post.author.profile.image.url }}" alt="{{ post.author.username }}" class="author-avatar-small">
                     {% else %}
-                    <img src="{% static 'img/default-avatar.jpg' %}" alt="{{ post.author.username }}" class="author-avatar-small">
+                    <img src="{% static 'images/logo.png' %}" alt="{{ post.author.username }}" class="author-avatar-small">
                     {% endif %}
                     <div>
                         <p class="author-name">{{ post.author.username }}</p>

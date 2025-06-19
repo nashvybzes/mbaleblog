@@ -126,8 +126,8 @@ nav ul li a:hover::after {
 /* Hero Section */
 .hero {
     height: 70vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                url('') no-repeat center center/cover;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                url('{% static "images/logo.png" %}') no-repeat center center/cover;
     color: var(--pure-white);
     display: flex;
     align-items: center;

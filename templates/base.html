@@ -4,7 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsWave - Stay Updated</title>
+    <title>Nash Vybzes &trade; - Stay Updated</title>
+    <meta name="description" content="Home of Nash Vybzes™ — Explore the latest blog posts on music, culture, and more.">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ post.title|default:'Nash Vybzes &trade;' }}" />
+  <meta property="og:description" content="{{ post.content|truncatewords:25|default:'Discover the pulse of music, culture, and creativity with Nash Vybzes™. Dive into fresh stories, exclusive artist insights, playlists, and trend-setting vibes from the heart of the scene.' }}"/>
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:site_name" content="Nash Vybzes &trade;" />
+  {% if post.cover_image %}
+<meta property="og:image" content="{{ cover_image_url|default:'https://nashvybzes.site/static/images/default-og-image.jpg' }}" />
+  {% else %}
+    <meta property="og:image" content="{{ request.build_absolute_uri }}static/images/logo.png" />
+  {% endif %}
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ post.title|default:'Nash Vybzes &trade;' }}">
+  <meta name="twitter:description" content="{{ post.content|truncatewords:25|default:'Discover the pulse of music, culture, and creativity with Nash Vybzes™. Dive into fresh stories, exclusive artist insights, playlists, and trend-setting vibes from the heart of the scene.' }}">
+  {% if post.cover_image %}
+    <meta name="twitter:image" content="{{ cover_image_url|default:'https://nashvybzes.site/static/images/default-og-image.jpg' }}">
+  {% else %}
+    <meta name="twitter:image" content="{{ request.build_absolute_uri }}static/images/logo.png">
+  {% endif %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block css %} {% endblock %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -14,7 +45,9 @@
     <header>
         <div class="logo-container">
             <div class="logo-circle">
-                <span class="logo-text">NV</span>
+                <span class="logo-text">
+                    <img src="{% static 'images/logo.png' %}"  height="60px" style="border-radius: 50%;" alt="nash vybzes team logo">
+                </span>
             </div>
             <h1 class="site-title">NV | Gishu Live | East Vibes</h1>
         </div>
@@ -50,9 +83,11 @@
         <div class="footer-content">
             <div class="footer-logo">
                 <div class="logo-circle">
-                    <span class="logo-text">NW</span>
+                    <span class="logo-text">
+                                            <img src="{% static 'images/logo.png' %}"  height="60px" style="border-radius: 50%;" alt="nash vybzes team logo">
+                    </span>
                 </div>
-                <h3>NewsWave</h3>
+                <h3>Nash Vybzes &trade;</h3>
             </div>
             <div class="footer-links">
                 <ul>
@@ -84,5 +119,6 @@
     </footer>
 
     <script src="{% static 'js/script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

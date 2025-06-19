@@ -1,4 +1,4 @@
-
+{% extends 'base.html' %}
 {% load static %}
 
 {% block css %}
@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="playlist-bod">
 <div class="playlist-container" id="playlist">
   <div class="header">{{ playlist.title }}</div>
 
@@ -69,6 +70,7 @@
   <button onclick="exportAsSVG()">Export as SVG</button>
 </div>
 {% endif %}
+</div>
 {% endblock %}
 
 {% block extra_js %}

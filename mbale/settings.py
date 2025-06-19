@@ -20,8 +20,9 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 # APPLICATIONS
 INSTALLED_APPS = [
+    'playlists',
     'blog',
-    'playlists.apps.PlaylistsConfig',
+    'django.contrib.sitemaps',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +43,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mbale.urls'
-
+SITE_ID=1
 # TEMPLATES
 TEMPLATES = [
     {
@@ -95,7 +96,7 @@ USE_TZ = True
 # STATIC & MEDIA
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # for collectstatic in production
+STATIC_ROOT = BASE_DIR / 'staticfiles'  
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

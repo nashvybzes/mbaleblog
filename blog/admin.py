@@ -5,7 +5,7 @@ from .models import BlogPost, Category, Subscriber, Comment
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'created_at', 'views')
+    list_display = ('title', 'category', 'created_at', 'views' )
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ['title', 'content']
     list_filter = ['category', 'created_at']
