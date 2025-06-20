@@ -78,39 +78,7 @@
             </div>
 
             <!-- Sidebar -->
-            <aside class="sideba">
-                <div class="sideba-widget">
-                    <h4>Categories</h4>
-                    <ul class="category-list">
-                        {% for category in categories %}
-                        <li><a href="?category={{ category.slug }}">{{ category.category }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="sideba-widget">
-                    <h4>Recent Posts</h4>
-                    <ul class="recent-posts">
-                        {% for post in recent_posts %}
-                        <li>
-                            <a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a>
-                            <span class="post-date">{{ post.published_at|date:"M j, Y" }}</span>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="sideba-widget">
-                    <h4>Most Viewed</h4>
-                    <ul class="most-viewed">
-                        {% for post in most_viewed %}
-                        <li>
-                            <a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </aside>
+            
         </div>
     </section>
 {% endblock %}

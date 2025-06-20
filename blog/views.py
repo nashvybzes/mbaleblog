@@ -11,7 +11,13 @@ from django.contrib import messages
 from .forms import NewsletterForm, CommentForm,ContactForm
 from .models import BlogPost, Category, Subscriber, Comment
 
+
+def get_trending_posts(days=7, limit=3):
+    recent_period = timezone.now() - timedelta(days=days)
+    return BlogPost.objects.filter(published_at__gte=recent_period).order_by('-views')[:limit]
+
 def contact_view(request):
+    trending_posts = get_trending_posts()
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -23,13 +29,8 @@ def contact_view(request):
 
     return render(request, 'blog/contact.html', {
         'form': form,
+        'trending_posts': trending_posts,
     })
-
-
-def get_trending_posts(days=7, limit=5):
-    recent_period = timezone.now() - timedelta(days=days)
-    return BlogPost.objects.filter(published_at__gte=recent_period).order_by('-views')[:limit]
-
 
 def home_view(request):
     most_viewed = BlogPost.objects.order_by('-views')[:5]
@@ -41,9 +42,11 @@ def home_view(request):
     })
 
 def about(request):
-    return render(request, 'blog/about.html')
+    trending_posts = get_trending_posts()
+    return render(request, 'blog/about.html',{'trending_posts': trending_posts,})
 
 def blog_list(request):
+    trending_posts = get_trending_posts()
     category_slug = request.GET.get('category')
     search_query = request.GET.get('q')
     categories = Category.objects.all()
@@ -60,10 +63,11 @@ def blog_list(request):
     blog_posts = paginator.get_page(page_number)
 
     # Sidebar: recent posts
-    recent_posts = BlogPost.objects.order_by('-created_at')[:5]
+    recent_posts = BlogPost.objects.order_by('-created_at')[:3]
 
     return render(request, 'blog/list.html', {
         'blog_posts': blog_posts,
+        'trending_posts': trending_posts,
         'categories': categories,
         'selected_category': category_slug,
         'search_query': search_query,
@@ -71,16 +75,19 @@ def blog_list(request):
     })
 
 def trending_list(request):
+    trending_posts = get_trending_posts()
     posts = BlogPost.objects.all().order_by('-views')  
     paginator = Paginator(posts, 6)
     page_number = request.GET.get('page')
     blog_posts = paginator.get_page(page_number)
 
     return render(request, 'blog/trending.html', {
+        'trending_posts': trending_posts,
         'blog_posts': blog_posts,
     })
 
 def blog_detail(request, slug):
+    trending_posts = get_trending_posts()
     post = get_object_or_404(BlogPost, slug=slug)
 
     # ✅ Increment views safely using F() expression
@@ -129,6 +136,7 @@ def blog_detail(request, slug):
 
     return render(request, 'blog/detail.html', {
         'post': post,
+        'trending_posts': trending_posts,
         'cover_image_url': cover_image_url,
         'comments': comments,
         'comment_form': comment_form,

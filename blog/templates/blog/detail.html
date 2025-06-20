@@ -68,28 +68,6 @@
             <!-- Comments Section -->
             <div class="comments-section">
                 <h3>Comments ({{ comments.count }})</h3>
-                <form class="comment-form" id="commentForm" method="POST" action="{% url 'blog:ajax_comment' post.slug %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        {{ comment_form.username.label_tag }}
-                        {{ comment_form.username }}
-                        {% if comment_form.username.errors %}
-                            <div class="error">{{ comment_form.username.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        {{ comment_form.text.label_tag }}
-                        {{ comment_form.text }}
-                        {% if comment_form.text.errors %}
-                            <div class="error">{{ comment_form.text.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <!-- Honeypot field -->
-                    {{ comment_form.honeypot }}
-                    <!-- Parent comment ID for replies -->
-                    <input type="hidden" name="parent_id" id="parent_id" value="">
-                    <button type="submit" class="submit-comment">Post Comment</button>
-                </form>
 
                 <div class="comments-list" id="commentsList">
                     {% for comment in comments %}
@@ -114,6 +92,28 @@
                     </div>
                     {% endfor %}
                 </div>
+                <form class="comment-form" id="commentForm" method="POST" action="{% url 'blog:ajax_comment' post.slug %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ comment_form.username.label_tag }}
+                        {{ comment_form.username }}
+                        {% if comment_form.username.errors %}
+                            <div class="error">{{ comment_form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ comment_form.text.label_tag }}
+                        {{ comment_form.text }}
+                        {% if comment_form.text.errors %}
+                            <div class="error">{{ comment_form.text.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <!-- Honeypot field -->
+                    {{ comment_form.honeypot }}
+                    <!-- Parent comment ID for replies -->
+                    <input type="hidden" name="parent_id" id="parent_id" value="">
+                    <button type="submit" class="submit-comment">Post Comment</button>
+                </form>
             </div>
         </div>
 
