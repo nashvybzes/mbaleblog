@@ -11,6 +11,17 @@ from django.contrib import messages
 from .forms import NewsletterForm, CommentForm,ContactForm
 from .models import BlogPost, Category, Subscriber, Comment
 
+from django.http import HttpResponse
+
+def robots_txt(request):
+    content = (
+        "User-agent: *\n"
+        "Disallow: /admin/\n"
+        "Sitemap: https://nashvybzes.site/sitemap.xml\n"
+    )
+    return HttpResponse(content, content_type="text/plain")
+
+
 
 def get_trending_posts(days=7, limit=3):
     recent_period = timezone.now() - timedelta(days=days)

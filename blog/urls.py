@@ -10,6 +10,7 @@ urlpatterns = [
     path('news', views.blog_list, name='list'),
     path('trending/', views.trending_list, name='trending'),
     path('newsletter-signup/', views.newsletter_signup, name='newsletter_signup'),
+    path("robots.txt", views.robots_txt, name="robots_txt"),
     path('<slug:slug>/', views.blog_detail, name='detail'),
     path('<slug:slug>/comment/', views.ajax_add_comment, name='ajax_comment'),
 ]
