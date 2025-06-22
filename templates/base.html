@@ -10,27 +10,40 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
-  <!-- Open Graph Meta Tags -->
+{% if post %}
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="{{ post.title|default:'Nash Vybzes &trade;' }}" />
-  <meta property="og:description" content="{{ post.content|truncatewords:25|default:'Discover the pulse of music, culture, and creativity with Nash Vybzes™. Dive into fresh stories, exclusive artist insights, playlists, and trend-setting vibes from the heart of the scene.' }}"/>
+  <meta property="og:title" content="{{ post.title }}" />
+  <meta property="og:description" content="{{ post.content|truncatewords:30 }}" />
   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-  <meta property="og:site_name" content="Nash Vybzes &trade;" />
+  <meta property="og:site_name" content="Nash Vybzes™" />
+
   {% if post.cover_image %}
-<meta property="og:image" content="{{ cover_image_url|default:'https://nashvybzes.site/static/images/default-og-image.jpg' }}" />
+    <meta property="og:image" content="{{ post.cover_image.url }}" />
   {% else %}
-    <meta property="og:image" content="{{ request.build_absolute_uri }}static/images/logo.png" />
+    <meta property="og:image" content="{% static 'images/og.png' %}" />
   {% endif %}
 
-  <!-- Twitter Card Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ post.title|default:'Nash Vybzes &trade;' }}">
-  <meta name="twitter:description" content="{{ post.content|truncatewords:25|default:'Discover the pulse of music, culture, and creativity with Nash Vybzes™. Dive into fresh stories, exclusive artist insights, playlists, and trend-setting vibes from the heart of the scene.' }}">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ post.title }}" />
+  <meta name="twitter:description" content="{{ post.content|truncatewords:30 }}" />
   {% if post.cover_image %}
-    <meta name="twitter:image" content="{{ cover_image_url|default:'https://nashvybzes.site/static/images/default-og-image.jpg' }}">
+    <meta name="twitter:image" content="{{ post.cover_image.url }}" />
   {% else %}
-    <meta name="twitter:image" content="{{ request.build_absolute_uri }}static/images/logo.png">
+    <meta name="twitter:image" content="{% static 'images/og.png' %}" />
   {% endif %}
+{% else %}
+  <!-- Fallback for general pages without specific post -->
+  <meta property="og:title" content="Nash Vybzes™ | Music. Culture. Lifestyle." />
+  <meta property="og:description" content="Stay in the loop with trending stories, new playlists, artist features, and cultural insights from Nash Vybzes." />
+  <meta property="og:image" content="{% static 'images/og.png' %}" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nash Vybzes™ | Music. Culture. Lifestyle." />
+  <meta name="twitter:description" content="Stay in the loop with trending stories, new playlists, artist features, and cultural insights from Nash Vybzes." />
+  <meta name="twitter:image" content="{% static 'images/og.png' %}" />
+{% endif %}
+
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">

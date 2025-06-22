@@ -85,7 +85,6 @@
     })
     .catch(error => console.log('Error sharing:', error));
   } else {
-    // Fallback for browsers that don't support the Web Share API
     alert('Copy this link to share: ' + window.location.href);
   }
 }
