@@ -31,12 +31,13 @@ class Category(models.Model):
         return self.category
 
 class BlogPost(models.Model):
-    title = models.CharField(max_length=70)
+    title = models.CharField(max_length=150)
     slug = models.SlugField(unique=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
-    headline=models.CharField(max_length=160, blank=True)
+    headline=models.CharField(max_length=500, blank=True)
     content = models.TextField()
     cover_image = models.ImageField(upload_to='blog_covers/', blank=True)
+    link = models.URLField(blank=True, null=True)
     tags = models.CharField(max_length=255, blank=True) 
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     published_at = models.DateTimeField(auto_now_add=True)

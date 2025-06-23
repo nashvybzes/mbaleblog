@@ -21,6 +21,9 @@
                             <span class="date">{{ post.published_at|date:"F j, Y" }}</span>
                             <span class="author">By {{ post.author.username }} {{ post.views }}</span>
                         </div>
+                        <div class="hasttag">
+                            <p class="tags">{{ post.tags }}</p>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}

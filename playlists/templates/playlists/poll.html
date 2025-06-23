@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'playlists/styles.css' %}">
+{% endblock %}
+
+{% block meta_tags %}
+    <meta property="og:title" content="{{ poll.title }}">
+    <meta property="og:description" content="Vote for your favorite songs in our music poll!">
+    <meta property="og:image" content="{% static 'images/poll_share.jpg' %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+
+{% block content %}
+<div class="poll-container">
+    <h1>{{ poll.title }}</h1>
+    <div class="poll-status">
+        {% if poll.is_active %}
+            <span class="active">Voting Open!</span>
+            <p>Poll ends: {{ poll.end_time|date:"F j, Y H:i" }}</p>
+        {% else %}
+            {% if timezone.now < poll.start_time %}
+                <span class="upcoming">Poll starts: {{ poll.start_time|date:"F j, Y H:i" }}</span>
+            {% else %}
+                <span class="ended">Voting Closed</span>
+            {% endif %}
+        {% endif %}
+    </div>
+    
+    {% if poll.is_active and not has_voted %}
+    <div class="vote-instructions">
+        <p>Vote for your favorite song below:</p>
+    </div>
+    {% endif %}
+    
+    <div class="songs-list">
+        {% for poll_song in poll_songs %}
+        <div class="song-item">
+            <div class="song-number">#{{ forloop.counter }}</div>
+            <div class="song-profile" style="background-image:url('{{ poll_song.song.cover_image.url }}')"></div>
+            <div class="song-info">
+                <div class="song-title">{{ poll_song.song.title }}</div>
+                <div class="artist-name">{{ poll_song.song.artist.name }}</div>
+            </div>
+            <div class="vote-info">
+                <div class="vote-count">{{ poll_song.votes }} votes</div>
+                <div class="vote-percentage">{{ poll_song.percentage|floatformat:1 }}%</div>
+                {% if poll.is_active and not has_voted %}
+                <button class="vote-button" 
+                        onclick="voteForSong({{ poll.id }}, {{ poll_song.id }})">Vote</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="total-votes">
+        Total votes: {{ total_votes }}
+    </div>
+    
+    {% if is_admin %}
+    <div class="admin-actions">
+        {% if not poll.is_active and timezone.now > poll.end_time %}
+        <button onclick="finalizePoll({{ poll.id }})">Generate Playlist from Results</button>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="share-section">
+        <button onclick="sharePoll()">Share This Poll</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    
+    function finalizePoll(pollId) {
+        if (confirm('Are you sure you want to generate the final playlist from these results?')) {
+            fetch(`/poll/${pollId}/finalize/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    window.location.href = '/current/';
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while finalizing the poll.');
+            });
+        }
+    }
+    
+    function sharePoll() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ poll.title }}',
+                text: 'Vote for your favorite songs in this music poll!',
+                url: window.location.href,
+            })
+            .catch(error => console.log('Error sharing:', error));
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            const shareUrl = window.location.href;
+            const tempInput = document.createElement('input');
+            document.body.appendChild(tempInput);
+            tempInput.value = shareUrl;
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Link copied to clipboard! Share it with your friends.');
+        }
+    }
+</script>
+{% endblock %}

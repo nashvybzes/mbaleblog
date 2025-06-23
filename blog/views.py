@@ -23,7 +23,7 @@ def robots_txt(request):
 
 
 
-def get_trending_posts(days=7, limit=3):
+def get_trending_posts(days=7, limit=30):
     recent_period = timezone.now() - timedelta(days=days)
     return BlogPost.objects.filter(published_at__gte=recent_period).order_by('-views')[:limit]
 
@@ -44,8 +44,9 @@ def contact_view(request):
     })
 
 def home_view(request):
-    most_viewed = BlogPost.objects.order_by('-views')[:5]
+    most_viewed = BlogPost.objects.order_by('-views')[:30]
     trending_posts = get_trending_posts()
+
 
     return render(request, 'blog/home.html', {
         'most_viewed': most_viewed,

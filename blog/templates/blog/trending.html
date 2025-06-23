@@ -27,9 +27,12 @@
                 </a>
                 <div class="article-meta">
                     <span class="date">{{ post.published_at|date:"F j, Y" }}</span>
-                    <span class="author">By {{ post.author.username }}</span>
+                    <span class="author">By {{ post.author.username }} {{ post.views }}</span>
                     <span class="comments"><i class="fas fa-comment"></i> {{ post.comments.count }}</span>
                 </div>
+                <div class="hasttag">
+                            <p class="tags">{{ post.tags }}</p>
+                        </div>
             </div>
         </article>
         {% endfor %}

@@ -43,7 +43,7 @@
   <meta name="twitter:description" content="Stay in the loop with trending stories, new playlists, artist features, and cultural insights from Nash Vybzes." />
   <meta name="twitter:image" content="{% static 'images/og.png' %}" />
 {% endif %}
-
+      {% block meta_tags %}{% endblock %}
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
@@ -210,7 +210,7 @@
             <ul>
                 <li><a href="{% url 'blog:home' %}" class="{% if request.resolver_match.url_name == 'blog:home' %}active{% endif %}">Home</a></li>
                 <li><a href="{% url 'blog:trending' %}">Trending</a></li>
-                <li><a href="{% url 'playlist_detail' %}">Playlist</a></li>
+                <li><a href="{% url 'current_playlist' %}">Playlist</a></li>
                 <li><a href="{% url 'blog:about' %}">About</a></li>
                 <li><a href="{% url 'blog:contact' %}">Contact Us</a></li>
             </ul>
@@ -226,7 +226,7 @@
    <section class="hero">
     <div class="hero-nav">
     <a href="{% url 'blog:home' %}">Home</a>
-    <a href="{% url 'playlist_detail' %}">Playlists</a>
+    <a href="{% url 'current_playlist' %}">Playlists</a>
     <a href="{% url 'blog:contact' %}">Contact</a>
   </div>
     {% for post in trending_posts %}
@@ -240,7 +240,6 @@
   </section>
     {% block content %}
     {% endblock %}
-
     <!-- Footer -->
     <footer>
         <div class="footer-content">
@@ -256,7 +255,7 @@
                 <ul>
                     <li><a href="{% url 'blog:home' %}">Home</a></li>
                     <li><a href="{% url 'blog:trending' %}">Trending</a></li>
-                    <li><a href="{% url 'playlist_detail' %}">Playlist</a></li>
+                    <li><a href="{% url 'current_playlist' %}">Playlist</a></li>
                     <li><a href="{% url 'blog:about' %}">About</a></li>
                     <li><a href="{% url 'blog:contact' %}">Contact Us</a></li>
                 </ul>
@@ -280,7 +279,6 @@
             <p>&copy; {% now "Y" %} Nash Vybzes &trade; | Gishu Live Tv | East Vibes.Bizz. All rights reserved.</p>
         </div>
     </footer>
-
     <script>
         let currentIndex = 0;
 const slides = document.querySelectorAll(".slide");
@@ -304,7 +302,57 @@ function prevSlide() {
 
 // Auto change every 3 seconds
 setInterval(nextSlide, 3000);
+
+async function voteForSong(pollId, songId) {
+    try {
+        const response = await fetch(`/poll/${pollId}/vote/${songId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        });
+
+        // Check for non-JSON responses
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            throw new Error(`Server returned: ${text.substring(0, 100)}`);
+        }
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            // Update CSRF token if provided
+            if (data.csrf_token) {
+                updateCSRFToken(data.csrf_token);
+            }
+            throw new Error(data.message || 'Voting failed');
+        }
+
+        // Success case
+        alert(data.message);
+        window.location.reload();
+        
+    } catch (error) {
+        console.error('Voting error:', error);
+        alert(`Voting failed: ${error.message}`);
+    }
+}
+
+// Helper functions
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+}
+
+function updateCSRFToken(token) {
+    const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (csrfInput) csrfInput.value = token;
+}
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>

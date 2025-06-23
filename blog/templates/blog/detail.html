@@ -32,7 +32,13 @@
             <div class="news-details">
                 {{ post.content|linebreaks }}
             </div>
+            {% if blogpost.youtube_link %}
+                <a href="{{ blogpost.link }}" class="youtube-link" target="_blank" rel="noopener noreferrer">watch</a>
+            {% endif %}
 
+<div class="hasttag">
+                            <p class="tags">{{ post.tags }}</p>
+                        </div>
             <!-- News Meta -->
             <div class="news-meta">
                 <div class="author-meta">
